@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ClientConfig.fs" />
+    <Compile Include="Topics.fs" />
+    <Compile Include="Broker.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Confluent.kafka" Version="1.4.4" />
+  </ItemGroup>
+
+</Project>
