@@ -1,10 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="README.md" />
+    <Compile Include="Client.fs" />
     <Compile Include="ClientConfig.fs" />
     <Compile Include="Topics.fs" />
     <Compile Include="Broker.fs" />
