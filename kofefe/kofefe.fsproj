@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Message.fs" />
+    <Compile Include="Json.fs" />
     <None Include="README.md" />
     <Compile Include="Client.fs" />
     <Compile Include="ClientConfig.fs" />
