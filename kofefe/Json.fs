@@ -1,4 +1,4 @@
-﻿namespace kofefe
+﻿namespace Kofefe
 
 open System.Text.Json
 

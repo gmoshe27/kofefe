@@ -1,4 +1,4 @@
-﻿namespace kofefe
+﻿namespace Kofefe
 
 type Message = {
     Partition : int
@@ -6,7 +6,5 @@ type Message = {
     Timestamp : System.DateTime
     Key : string
     Value : string
-
-    
 }
 
