@@ -4,6 +4,8 @@ open System
 open System.Threading
 open Confluent.Kafka
 
+open Kofefe.Types
+
 module Topics =
     let private timeoutInSeconds = 45.0
 

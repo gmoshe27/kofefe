@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Kofefe.Types\Kofefe.Types.fsproj" />
     <ProjectReference Include="..\kofefe\Kofefe.fsproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace Kofefe
+﻿namespace Kofefe.Types
 
 type Message = {
     Partition : int

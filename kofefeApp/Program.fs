@@ -1,8 +1,6 @@
 ﻿// Learn more about F# at http://fsharp.org
 
-open System
-
-open kofefe
+open Kofefe
 
 [<EntryPoint>]
 let main argv =
