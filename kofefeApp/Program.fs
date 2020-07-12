@@ -7,11 +7,10 @@ let main argv =
 
     // setup the configuration
     let config = ClientConfig.createConfig ()
-    
+
     // 1. connecting to a broker will get all of the open topics
     let topics =
-        Client.getAdminClient config
-        |> Topics.listTopics
+        Client.getAdminClient config |> Topics.listTopics
 
     // 2. once connected, we can get metadata for a topic
     let topicMetadata =
