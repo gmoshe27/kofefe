@@ -18,7 +18,8 @@ module Topics =
         |> List.map (fun x -> x.Topic)
 
     let getTopicMetadata topic (client: IAdminClient) =
-        client.GetMetadata(topic, TimeSpan.FromSeconds(timeoutInSeconds))
+        let topics = client.GetMetadata(topic, TimeSpan.FromSeconds(timeoutInSeconds))
+        topics.Topics
 
     let consume topic (consumer: IConsumer<string, string>) =
         let cts = new CancellationTokenSource()
