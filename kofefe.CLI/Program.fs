@@ -9,19 +9,17 @@ let main argv =
     // 0. get the admin client
     let client = Client.getAdminClient config
 
-    // 1. connecting to a broker will get all of the open topics
+    // 1. Get a list of all of the topics on the broker
     let topics = client |> Topics.listTopics
 
-    // 2. for all of the topics, show the metadata
-    topics
-    |> List.iter (fun topic ->
-        let md = client |> Topics.getTopicMetadata topic
-        printfn "Topic Metadata: %A" md)
+    // 2. Get the partitions for one of the topics
+    let topic = "test-p3"
+    let partitions = client |> Topics.getParitions topic
 
     // 3. with a topic, we can consume data, without any filters for now
-    //let messages =
-    //    Client.getConsumerClient config
-    //    |> Topics.consume "test"
+    let messages =
+        Client.getConsumerClient config
+        |> Topics.consume topic partitions 100L
 
     printfn "All Topics : %A" topics
     0

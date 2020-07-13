@@ -17,21 +17,39 @@ module Topics =
         |> List.ofSeq
         |> List.map (fun x -> x.Topic)
 
-    let getTopicMetadata topic (client: IAdminClient) =
-        let topics = client.GetMetadata(topic, TimeSpan.FromSeconds(timeoutInSeconds))
-        topics.Topics
+    let getParitions topic (client: IAdminClient) =
+        let topics =
+            client.GetMetadata(topic, TimeSpan.FromSeconds(timeoutInSeconds))
 
-    let consume topic (consumer: IConsumer<string, string>) =
+        topics.Topics.[0].Partitions
+        |> Seq.map (fun partition -> partition.PartitionId)
+        |> Seq.toList
+
+    let consume topic (partitions: int list) count (consumer: IConsumer<string, string>) =
+
         let cts = new CancellationTokenSource()
         let pos = 100
 
-        // If all of the partitions are known, we can assign each partition an offset and read from that point
-        // Otherwise, if this doesn't work, it might be required to get the latest offsets for each partition and subtract out
-        // the requested length of items
-        let offset =
-            TopicPartitionOffset(TopicPartition(topic, Partition(0)), Offset(-pos |> int64))
+        // get the watermarks for all of the offsets
+        let offsetAssignments =
+            partitions
+            |> List.map (fun partition ->
+                let topicPartition =
+                    TopicPartition(topic, Partition(partition))
 
-        consumer.Assign([ offset ] |> List.toSeq)
+                let watermark =
+                    consumer.QueryWatermarkOffsets(topicPartition, TimeSpan.FromSeconds(30.0))
+
+                let offset =
+                    if watermark.High.Value - watermark.Low.Value > count then
+                        watermark.High.Value - count
+                    else
+                        watermark.Low.Value
+
+                printfn "Setting Offset for %s:%d to %d" topic partition offset
+                TopicPartitionOffset(topicPartition, Offset(offset)))
+
+        consumer.Assign(offsetAssignments)
 
         // try to get offest number of messages
         let rec _consume i (messages: Message list) =
@@ -51,3 +69,17 @@ module Topics =
                 _consume (i + 1) (message :: messages)
 
         _consume 0 []
+
+    let produce (topic: string) key value (producer: IProducer<string, string>) =
+        async {
+            let message = Message<string, string>()
+            message.Key <- key
+            message.Value <- value
+            message.Timestamp <- Timestamp(DateTime.UtcNow)
+
+            let! deliveryResult =
+                producer.ProduceAsync(topic, message)
+                |> Async.AwaitTask
+
+            printfn "Writing to Partition %d, offset : %d" deliveryResult.Partition.Value deliveryResult.Offset.Value
+        }

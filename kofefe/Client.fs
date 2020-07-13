@@ -17,12 +17,21 @@ module Client =
         // disable auto commits of offset to prevent registering the group as a consumer
         cconfig.EnableAutoCommit <- false |> Some |> Option.toNullable
 
+        // manually handle the initial offset setting when consuming from a topic
+        cconfig.AutoOffsetReset <- None |> Option.toNullable
+
         // always start reading from the earliest offset
         cconfig.AutoOffsetReset <-
-            AutoOffsetReset.Earliest
+            AutoOffsetReset.Latest
             |> Some
             |> Option.toNullable
 
+        // the client id is included in requests to the server, making it easy to trace
+        config.ClientId <- "kofefe"
+
+        // You should always configure group.id unless you are using the simple assignment API and you don’t need to store offsets in Kafka.
+        // https://docs.confluent.io/current/clients/consumer.html
+        // TODO: look into whether this setting makes sense
         cconfig.GroupId <- "kofefe-group"
 
         cconfig
