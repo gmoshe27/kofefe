@@ -11,7 +11,7 @@ module Client =
     let clients = Dictionary<string, string>()
 
 
-    let private getConsumerConfig (config: ClientConfig) =
+    let private getConsumerConfig (groupId: string option) (config: ClientConfig) =
         let cconfig = ConsumerConfig(config)
 
         // disable auto commits of offset to prevent registering the group as a consumer
@@ -32,15 +32,17 @@ module Client =
         // You should always configure group.id unless you are using the simple assignment API and you don’t need to store offsets in Kafka.
         // https://docs.confluent.io/current/clients/consumer.html
         // TODO: look into whether this setting makes sense
-        cconfig.GroupId <- "kofefe-group"
+        cconfig.GroupId <-
+            match groupId with
+            | Some gid -> gid
+            | None -> "kofefe-group"
 
         cconfig
 
     // TODO: dispose client on shutdown
     let getProducerClient (config: ClientConfig) =
         // Might have to manage the life-cycle of the client manually
-        let producer =
-            (new ProducerBuilder<string, string>(config)).Build()
+        let producer = (new ProducerBuilder<string, string>(config)).Build()
 
         producer
 
@@ -50,10 +52,9 @@ module Client =
         admin
 
     // TODO: dispose client on shutdown
-    let getConsumerClient (config: ClientConfig) =
-        let cfg = getConsumerConfig config
+    let getConsumerClient (groupId: string option) (config: ClientConfig) =
+        let cfg = getConsumerConfig groupId config
 
-        let consumer =
-            (new ConsumerBuilder<string, string>(cfg)).Build()
+        let consumer = (new ConsumerBuilder<string, string>(cfg)).Build()
 
         consumer

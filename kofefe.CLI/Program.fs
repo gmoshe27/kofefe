@@ -1,5 +1,7 @@
 ﻿open Kofefe
 
+open Kofefe.Types
+
 [<EntryPoint>]
 let main argv =
 
@@ -18,8 +20,19 @@ let main argv =
 
     // 3. with a topic, we can consume data, without any filters for now
     let messages =
-        Client.getConsumerClient config
+        Client.getConsumerClient None config
         |> Topics.consume topic partitions 100L
+
+    // 4. Assign a consumer group to specific offsets
+    let offsets: PartitionOffset list =
+        [ { PartitionId = 0; Offset = 32L }
+          { PartitionId = 1; Offset = 41L }
+          { PartitionId = 2; Offset = 75L } ]
+    let assignment = PartitionOffsetAssignment.Explicit offsets
+
+
+    Client.getConsumerClient (Some "my-consumer") config
+    |> ConsumerGroup.assignOffsets topic assignment
 
     printfn "All Topics : %A" topics
     0

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="PartitionOffset.fs" />
     <Compile Include="Partition.fs" />
     <Compile Include="Message.fs" />
   </ItemGroup>
