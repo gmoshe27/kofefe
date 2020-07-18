@@ -10,10 +10,19 @@ module Topics =
     let private timeoutInSeconds = 45.0
 
     let listTopics (client: IAdminClient) =
-        let topics =
+        let metadata =
             client.GetMetadata(TimeSpan.FromSeconds(timeoutInSeconds))
 
-        topics.Topics
+        metadata.Topics
+        |> List.ofSeq
+        |> List.map (fun x -> x.Topic)
+
+    let listConsumers topic (client: IAdminClient) =
+        let metadata =
+            client.GetMetadata(TimeSpan.FromSeconds(timeoutInSeconds))
+        
+        metadata.Topics
+        |> Seq.filter(fun t -> t.Topic = "_consumer-groups")
         |> List.ofSeq
         |> List.map (fun x -> x.Topic)
 

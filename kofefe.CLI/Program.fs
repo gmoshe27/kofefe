@@ -24,15 +24,21 @@ let main argv =
         |> Topics.consume topic partitions 100L
 
     // 4. Assign a consumer group to specific offsets
+    let groupId = "my-consumer"
+
     let offsets: PartitionOffset list =
         [ { PartitionId = 0; Offset = 32L }
           { PartitionId = 1; Offset = 41L }
           { PartitionId = 2; Offset = 75L } ]
     let assignment = PartitionOffsetAssignment.Explicit offsets
 
+    Client.getConsumerClient (Some groupId) config
+    |> ConsumerGroup.assignOffsets topic groupId assignment
 
-    Client.getConsumerClient (Some "my-consumer") config
-    |> ConsumerGroup.assignOffsets topic assignment
+    // 5. TODO: Read back all consumer groups
+    let groups = client.ListGroups (System.TimeSpan.FromSeconds(45.0))
+    groups
+    |> Seq.iter(fun g -> printfn "Group: %s" g.Group)
 
     printfn "All Topics : %A" topics
     0
