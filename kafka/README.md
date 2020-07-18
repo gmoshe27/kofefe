@@ -2,6 +2,8 @@
 
 The docker image used is based on Spotify's docker containers  
 https://zablo.net/blog/post/setup-apache-kafka-in-docker-on-windows/
+https://itnext.io/how-to-install-kafka-using-docker-a2b7c746cbdc (latest, uses bitnami)
+https://hub.docker.com/r/hlebalbau/kafka-manager/
 
 ## Run the Docker instance
 ```
