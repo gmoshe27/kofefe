@@ -28,7 +28,7 @@ module Client =
         cfg.EnableAutoCommit <- false |> Some |> Option.toNullable
 
         // the client id is included in requests to the server, making it easy to trace
-        cfg.ClientId <- "kofefe"
+        cfg.ClientId <- "kofefe-app"
 
         cfg
 

@@ -58,6 +58,7 @@ module Topics =
                 printfn "Setting Offset for %s:%d to %d" topic partition offset
                 TopicPartitionOffset(topicPartition, Offset(offset)))
 
+        // Assign the explicit offsets to start consuming from
         consumer.Assign(offsetAssignments)
 
         // try to get offest number of messages

@@ -17,7 +17,7 @@ let main argv =
 
     // 2. Get the partitions for one of the topics
     let topic = "topic-p3"
-    Producer.createMessages 50 topic config
+    //Producer.createMessages 50 topic config
     let partitions = client |> Topics.getParitions topic
 
     // 3. with a topic, we can consume data, without any filters for now
@@ -38,13 +38,13 @@ let main argv =
     Client.getConsumerClient (Some groupId) config
     |> ConsumerGroup.assignOffsets topic groupId assignment
 
-    // 5. Read back all consumer groups for a broker
+    // 5. Read back all consumer groups for the broker
     client.ListGroups(System.TimeSpan.FromSeconds(45.0))
     |> Seq.iter (fun g -> printfn "Group: %s" g.Group)
 
     // 6. Get the consumer group metadata
     Client.getConsumerClient (Some groupId) config
-    |> ConsumerGroup.getOffsets
+    |> ConsumerGroup.getOffsets topic partitions
     |> List.iter (fun md ->
         printfn "Partition %d | Log Size %d | Offset %d | Lag %d" md.PartitionId md.High md.Offset md.Lag)
 
