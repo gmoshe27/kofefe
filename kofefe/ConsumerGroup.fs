@@ -27,4 +27,4 @@ module ConsumerGroup =
                     offset.Offset
 
                 TopicPartitionOffset(tp, o))
-            |> client.Assign
+            |> client.Commit

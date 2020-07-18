@@ -14,21 +14,21 @@ module Client =
     let private getConsumerConfig (groupId: string option) (config: ClientConfig) =
         let cfg = ConsumerConfig(config)
 
+        // The group id always needs to be set with this api
         match groupId with
         | Some gid ->
-            // Enable auto commit to apply any consumer-level settings
-            cfg.EnableAutoCommit <- true |> Some |> Option.toNullable
             cfg.GroupId <- gid
         | None ->
-            // disable auto commits of offset to prevent registering the group as a consumer
-            cfg.EnableAutoCommit <- false |> Some |> Option.toNullable
             cfg.GroupId <- "kofefe"
 
         // manually handle the initial offset setting when consuming from a topic
         cfg.AutoOffsetReset <- None |> Option.toNullable
 
+        // disable auto commits of offset to prevent registering the group as a consumer
+        cfg.EnableAutoCommit <- false |> Some |> Option.toNullable
+
         // the client id is included in requests to the server, making it easy to trace
-        config.ClientId <- "kofefe"
+        cfg.ClientId <- "kofefe"
 
         cfg
 
