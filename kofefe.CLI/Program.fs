@@ -6,6 +6,9 @@ open Kofefe.Types
 [<EntryPoint>]
 let main argv =
 
+    // TODO: Create the Broker screen
+    // Also create github action cicd page https://github.blog/2019-08-08-github-actions-now-supports-ci-cd/
+
     // setup the configuration
     let config = ClientConfig.createConfig ()
 
