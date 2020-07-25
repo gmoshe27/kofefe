@@ -2,8 +2,6 @@
 
 open Confluent.Kafka
 
-open System.Text.Json
-
 module ClientConfig =
 
     // file format
@@ -18,3 +16,7 @@ module ClientConfig =
         let config = new ClientConfig()
         config.Set("bootstrap.servers", "127.0.0.1:9092")
         config
+
+    let getConfigFor name =
+        // load the config name from the toml file
+        createConfig ()

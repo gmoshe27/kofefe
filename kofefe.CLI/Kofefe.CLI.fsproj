@@ -7,13 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="kofefe.toml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Compile Include="ConfigParser.fs" />
     <Compile Include="Producer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
+  <ItemGroup />
+
   <ItemGroup>
     <ProjectReference Include="..\Kofefe.Types\Kofefe.Types.fsproj" />
     <ProjectReference Include="..\kofefe\Kofefe.fsproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="tomlyn" Version="0.1.2" />
   </ItemGroup>
 
 </Project>

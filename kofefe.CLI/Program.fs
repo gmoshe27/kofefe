@@ -7,7 +7,8 @@ open Kofefe.Types
 let main argv =
 
     // TODO: Create the Broker screen
-    // Also create github action cicd page https://github.blog/2019-08-08-github-actions-now-supports-ci-cd/
+    // TODO: convert the rest of the CLI into an async workflow
+    let cfg = ConfigParser.readConfig "kofefe.toml" |> Async.RunSynchronously
 
     // setup the configuration
     let config = ClientConfig.createConfig ()

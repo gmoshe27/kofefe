@@ -1,0 +1,10 @@
+﻿# Brokers will be an array of tables
+[[Brokers]]
+
+# the id will help with assigning positional order on the UI
+Id = "e1174d53c14640719bad62ab5e866a38"
+Name = "local"
+
+# the broker list is an array of host:port values separated by a comma ",". Arrays can be multi-line
+BrokerList = ["127.0.0.1:9092"] 
+Collections = [ {Name = "favorites", Topics = "test-p3"} ]
