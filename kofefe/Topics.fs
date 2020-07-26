@@ -34,10 +34,12 @@ module Topics =
         |> Seq.map (fun partition -> partition.PartitionId)
         |> Seq.toList
 
+    // issue: The count should be applied to each partition in the recursive function
+    // issue: When the watermark is equivalent (high - low = 0), the consume function never moves forward
     let consume topic (partitions: int list) count (consumer: IConsumer<string, string>) =
 
         let cts = new CancellationTokenSource()
-        let pos = 100
+        let pos = count
 
         // get the watermarks for all of the offsets
         let offsetAssignments =
@@ -76,9 +78,9 @@ module Topics =
                       Key = cr.Message.Key
                       Value = cr.Message.Value }
 
-                _consume (i + 1) (message :: messages)
+                _consume (i + 1L) (message :: messages)
 
-        _consume 0 []
+        _consume 0L []
 
     let produce (topic: string) key value (producer: IProducer<string, string>) =
         async {

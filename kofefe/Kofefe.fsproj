@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ConfigParser.fs" />
     <Compile Include="ConsumerGroup.fs" />
     <Compile Include="Json.fs" />
     <None Include="README.md" />

@@ -12,3 +12,5 @@ type BrokerConfig =
           Name = ""
           BrokerList = []
           Collections = [] }
+
+    member __.brokers = __.BrokerList |> String.concat ","

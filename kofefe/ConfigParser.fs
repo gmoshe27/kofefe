@@ -1,4 +1,4 @@
-﻿namespace Kofefe.CLI
+﻿namespace Kofefe
 
 open Kofefe.Types
 

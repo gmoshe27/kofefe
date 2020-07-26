@@ -10,7 +10,6 @@
     <None Include="kofefe.toml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Compile Include="ConfigParser.fs" />
     <Compile Include="Producer.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

@@ -15,7 +15,7 @@ module Producer =
 
     let createMessages n topic (config:ClientConfig) =
 
-        printfn "Creating %d messages to topic %s" n topic
+        printfn "Creating %d messages on topic %s" n topic
 
         // create message type
         let message =

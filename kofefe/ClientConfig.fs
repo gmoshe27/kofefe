@@ -1,6 +1,7 @@
 ﻿namespace Kofefe
 
 open Confluent.Kafka
+open Kofefe.Types
 
 module ClientConfig =
 
@@ -12,11 +13,18 @@ module ClientConfig =
     //sasl.username={{ CLUSTER_API_KEY }}
     //sasl.password={{ CLUSTER_API_SECRET }}
 
-    let createConfig (): ClientConfig =
+    /// Create a Kafka ClientConfig object using the broker list
+    let createConfig (broker: BrokerConfig): ClientConfig =
         let config = new ClientConfig()
-        config.Set("bootstrap.servers", "127.0.0.1:9092")
+        config.Set("bootstrap.servers", broker.brokers)
         config
 
-    let getConfigFor name =
+    let getConfigFor name (brokerConfig: BrokerConfig list) =
         // load the config name from the toml file
-        createConfig ()
+        let brokerConfig =
+            brokerConfig
+            |> List.tryFind (fun b -> b.Name = name)
+
+        match brokerConfig with
+        | Some bc -> createConfig bc
+        | None -> failwithf "Failed to find the broker config for %s" name

@@ -6,12 +6,14 @@ open Kofefe.Types
 [<EntryPoint>]
 let main argv =
 
-    // TODO: Create the Broker screen
     // TODO: convert the rest of the CLI into an async workflow
-    let cfg = ConfigParser.readConfig "kofefe.toml" |> Async.RunSynchronously
+    // TODO: The Broker, ClientConfig, ConfigParser, and Client all need to be re-thought
+    let kconfig =
+        ConfigParser.readConfig "kofefe.toml"
+        |> Async.RunSynchronously
 
     // setup the configuration
-    let config = ClientConfig.createConfig ()
+    let config = kconfig |> ClientConfig.getConfigFor "local"
 
     // 0. get the admin client
     let client = Client.getAdminClient config
@@ -24,10 +26,13 @@ let main argv =
     //Producer.createMessages 50 topic config
     let partitions = client |> Topics.getParitions topic
 
-    // 3. with a topic, we can consume data, without any filters for now
+    // Generate 20 messages (should be async)
+    config |> Producer.createMessages 20 topic
+
+    // 3. with a topic, we can consume data, without any filters, rolling backwards by 10 messages
     let messages =
         Client.getConsumerClient None config
-        |> Topics.consume topic partitions 100L
+        |> Topics.consume topic partitions 10L
 
     // 4. Assign a consumer group to specific offsets
     let groupId = "my-consumer"

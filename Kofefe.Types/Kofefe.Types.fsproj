@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Config.fs" />
+    <Compile Include="BrokerConfig.fs" />
     <Compile Include="BrokerDetails.fs" />
     <Compile Include="ConsumerGroupOffset.fs" />
     <Compile Include="PartitionOffset.fs" />
